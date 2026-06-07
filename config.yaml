@@ -33,6 +33,14 @@ coverage:
   # GDELT query applied alongside the domain filter.
   base_query: "(israel OR gaza OR palestin) (rocket OR strike OR killed OR airstrike)"
 
+# LLM judge for framing analysis (src/analysis/framing_llm.py). More accurate
+# than the regex heuristic at resolving who-acted-on-whom in a headline.
+judge:
+  # Sonnet 4.6 balances accuracy and cost; switch to claude-haiku-4-5 to go cheaper.
+  model: "claude-sonnet-4-6"
+  # Headlines classified per API call. Larger = fewer calls; keep within output budget.
+  batch_size: 20
+
 # Side labels used throughout. `actor1` patterns infer who launched the event.
 sides:
   toward_israel:
