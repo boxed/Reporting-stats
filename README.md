@@ -49,11 +49,13 @@ Configured in [`config.yaml`](config.yaml):
 
 ## ⚠️ Network policy constraint
 
-ACLED and GDELT are **not reachable** from the restricted Claude-Code-on-the-web
-environment this repo may have been created in (`Host not in allowlist`). Run the
-ingestion steps where you have open network access — your laptop, or a web
-environment created with a broader network policy. See
-https://code.claude.com/docs/en/claude-code-on-the-web for network policies.
+ACLED and GDELT are **not reachable** from the default **Trusted** Claude-Code-on-the-web
+network level (`Host not in allowlist` / HTTP 403). Set the environment's Network
+access to **Custom** and allowlist the data hosts — full instructions and the exact
+domain list are in [`docs/NETWORK.md`](docs/NETWORK.md). The **framing judge needs
+no network change**: the Anthropic SDK host is already allowlisted, and the
+in-session subagent path needs neither a key nor network. Running locally sidesteps
+the allowlist entirely.
 
 ## Quick start
 
