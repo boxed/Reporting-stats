@@ -1,0 +1,10 @@
+episode_id,name,start_date,end_date,origin,projectiles_fired_approx,fell_short_in_gaza_approx,intercept_rate_pct_approx,israeli_deaths_from_projectiles_approx,confidence,outcome_notes
+1,Sderot era / Second Intifada (cumulative),2001-04-16,2008-12-26,Gaza,8000,,0,15,low,"Pre-Iron Dome. Mostly Qassams. Cumulative estimate; totals vary widely by source."
+2,Operation Cast Lead,2008-12-27,2009-01-18,Gaza,925,,0,3,medium,"Pre-Iron Dome. ~571 rockets + ~205 mortars per common tallies."
+3,Operation Pillar of Defense,2012-11-14,2012-11-21,Gaza,1506,,84,6,medium,"First major Iron Dome use; intercepted ~421 of those it engaged. 6 civilian deaths."
+4,Operation Protective Edge,2014-07-07,2014-08-26,Gaza,6634,875,90,6,high,"4,881 rockets + 1,753 mortars (OCHA). ~875 fell short inside Gaza (UN). 6 civilians killed by rocket fire."
+5,2018-2019 escalations (cumulative),2018-01-01,2019-12-31,Gaza,3000,,,5,low,"Multiple rounds incl. Nov 2018 (~460) and May 2019 (~690). Approximate."
+6,Operation Guardian of the Walls,2021-05-10,2021-05-21,Gaza,4360,680,90,12,high,"~4,360 fired; ~680 fell short inside Gaza; Iron Dome ~90% of those threatening populated areas."
+7,Breaking Dawn (PIJ),2022-08-05,2022-08-07,Gaza,1100,200,97,0,medium,"PIJ-only escalation; ~200 fell short inside Gaza; no Israeli deaths."
+8,Iron Swords — Oct 7 initial barrage,2023-10-07,2023-10-07,Gaza,3500,,,15,medium,"IDF ~2,200; Hamas claimed 5,000 (range encoded as midpoint). Casualties that day dominated by the ground assault, not rockets."
+9,Iron Swords — Oct 2023 to Jan 2024,2023-10-07,2024-01-31,Gaza,10600,1060,,,medium,"More than 10,600 projectiles launched; ~10% reported to have failed / fallen short."

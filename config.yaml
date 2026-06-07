@@ -1,0 +1,45 @@
+# Configuration for the reporting-asymmetry study.
+
+# Time window for the whole study. Override per-command with --start/--end.
+window:
+  start: "2023-10-01"
+  end: "2024-06-01"
+
+# ACLED ground-truth pull.
+acled:
+  countries: ["Israel", "Palestine"]
+  # Projectile / strike events. ACLED sub-event types of interest:
+  sub_event_types:
+    - "Shelling/artillery/missile attack"
+    - "Air/drone strike"
+  # Keywords used to flag rocket-toward-Israel events in notes (heuristic).
+  rocket_keywords: ["rocket", "mortar", "projectile", "barrage", "Iron Dome"]
+
+# Outlets to measure. `gdelt_domains` are matched with GDELT's `domainis:`.
+outlets:
+  western_legacy:
+    - { name: "BBC",            gdelt_domains: ["bbc.com", "bbc.co.uk"] }
+    - { name: "New York Times", gdelt_domains: ["nytimes.com"] }
+    - { name: "Reuters",        gdelt_domains: ["reuters.com"] }
+    - { name: "AP",             gdelt_domains: ["apnews.com"] }
+  regional:
+    - { name: "Al Jazeera",     gdelt_domains: ["aljazeera.com"] }
+    - { name: "Times of Israel",gdelt_domains: ["timesofisrael.com"] }
+    - { name: "Haaretz",        gdelt_domains: ["haaretz.com"] }
+
+# Coverage-matching: how long after an event do we count articles as "covering" it.
+coverage:
+  window_days: 3
+  # GDELT query applied alongside the domain filter.
+  base_query: "(israel OR gaza OR palestin) (rocket OR strike OR killed OR airstrike)"
+
+# Side labels used throughout. `actor1` patterns infer who launched the event.
+sides:
+  toward_israel:
+    actor_patterns: ["Hamas", "Islamic Jihad", "PIJ", "Hezbollah", "Lions' Den",
+                     "Al-Qassam", "Al-Quds", "Palestinian Militia", "Houthi"]
+    location_in: ["Israel"]
+  toward_palestine:
+    actor_patterns: ["Military Forces of Israel", "Police Forces of Israel",
+                     "Israel (2022-)", "Settlers"]
+    location_in: ["Palestine"]
