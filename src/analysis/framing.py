@@ -13,9 +13,13 @@ Output reports, per outlet and per side, the share of death-headlines that are
 agentless. A neutral outlet should apply agentless framing at similar rates
 regardless of who the victims are; a gap is the bias signal.
 
-Headlines can come from GDELT artlist mode (mode=artlist&format=json) — see
-docs/METHODOLOGY.md for the harvesting query. This module deliberately works on
-a CSV so you can hand-curate or swap the source.
+Headlines come from `src/ingest/headlines.py` (GDELT artlist) — or any CSV with
+`outlet,title,side` columns, so you can hand-curate or swap the source.
+
+Limitation: agent detection is a regex heuristic. It keys on active verb forms
+adjacent to a named actor and cannot fully resolve subject vs. object in every
+construction. For a publishable result, replace `is_agentless` with a spaCy
+dependency parse that checks the grammatical subject of the kill verb.
 
 Run:
     python -m src.analysis.framing
@@ -29,15 +33,20 @@ import pandas as pd
 
 from src.common import PROCESSED, RAW
 
-PASSIVE_DEATH = re.compile(r"\b(killed|dead|die[sd]?|slain|perish)\b", re.I)
-# An active actor immediately before a kill verb, e.g. "Israel kills", "Hamas fired".
+# Any death/violence headline, active or passive (so "Israel kills" is counted
+# AND classified as agentful, not silently dropped like a past-tense-only regex).
+DEATH = re.compile(r"\b(kill(s|ed|ing)?|dead|die[sd]?|slain|perish\w*|massacre\w*)\b", re.I)
+# A named actor performing the act, e.g. "Israel kills", "Hamas fires rockets".
+# Only ACTIVE verb forms count (kills/strikes), never the passive past participle
+# "killed" — "Israelis killed" is victim framing, not the Israelis acting.
 ACTIVE_AGENT = re.compile(
-    r"\b(israel|idf|israeli\s+\w+|hamas|militants?|gunmen|forces)\b\s+\w*\s*"
-    r"(kill|fire|strike|launch|hit|bomb)", re.I)
+    r"\b(israel\w*|idf|hamas|hezbollah|militants?|gunmen|forces|troops|soldiers)\b"
+    r"\s+\w*\s*(kills?|fires?|strikes?|launch(?:es)?|hits?|bombs?|shells?|raids?)\b",
+    re.I)
 
 
 def is_death_headline(title: str) -> bool:
-    return bool(PASSIVE_DEATH.search(title or ""))
+    return bool(DEATH.search(title or ""))
 
 
 def is_agentless(title: str) -> bool:
@@ -68,9 +77,19 @@ def main() -> int:
     by["agentless_share"] = by["agentless"] / by["death_headlines"]
     print(by)
 
-    print("\nGap = (agentless share when victims are Palestinian) - "
-          "(when victims are Israeli). A large positive gap means an outlet "
-          "strips the agent more often when Palestinians die.")
+    # The headline harvester tags `side` as the victim group. Compute, per
+    # outlet, the gap in agentless framing between Palestinian and Israeli deaths.
+    share = by["agentless_share"].unstack("side")
+    if {"palestinian", "israeli"}.issubset(share.columns):
+        gap = (share["palestinian"] - share["israeli"]).rename("pal_minus_isr_gap")
+        print("\nAgentless-framing gap per outlet (Palestinian - Israeli victims):")
+        print(gap.sort_values(ascending=False).to_string())
+        print("\nPositive => the outlet strips the named actor more often when "
+              "Palestinians die than when Israelis die. Negative => the reverse. "
+              "Near zero => symmetric framing.")
+    else:
+        print("\nNeed both 'palestinian' and 'israeli' victim sides present to "
+              "compute the gap; harvest more headlines or check side tagging.")
 
     PROCESSED.mkdir(parents=True, exist_ok=True)
     by.to_csv(PROCESSED / "framing.csv")

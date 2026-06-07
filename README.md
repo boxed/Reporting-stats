@@ -71,7 +71,10 @@ python -m src.baseline.rocket_baseline
 # 3. Pull per-outlet coverage volume (needs network; GDELT, no key)
 python -m src.ingest.gdelt --start 2023-10-01 --end 2024-06-01
 
-# 4. Run the three analyses
+# 4. Harvest real headlines for the framing analysis (needs network; GDELT)
+python -m src.ingest.headlines --start 2023-10-01 --end 2024-06-01
+
+# 5. Run the three analyses
 python -m src.analysis.coverage_volume
 python -m src.analysis.framing
 python -m src.analysis.selection
@@ -85,6 +88,7 @@ data/seed/rocket_episodes_seed.csv sourced, usable-now rocket baseline
 data/seed/SOURCES.md               provenance for every seed figure
 src/ingest/acled.py                pull both-sides events from ACLED
 src/ingest/gdelt.py                per-outlet coverage volume + tone
+src/ingest/headlines.py            harvest per-outlet headlines (GDELT artlist)
 src/baseline/rocket_baseline.py    derive rocket→Israel events + outcomes
 src/analysis/coverage_volume.py    articles per event / per fatality by side
 src/analysis/framing.py            agent attribution & passive-voice metrics
