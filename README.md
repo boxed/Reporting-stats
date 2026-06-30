@@ -70,6 +70,10 @@ python -m src.ingest.acled --start 2023-10-01 --end 2024-06-01
 # 2. Build the rocket-attack baseline (success/failure outcomes)
 python -m src.baseline.rocket_baseline
 
+# 2b. Build the weekly projectiles-toward-Israel time series (2001–2024)
+#     Uses ACLED events if present; else spreads the seed episodes (approx).
+python -m src.baseline.weekly_rate
+
 # 3. Pull per-outlet coverage volume (needs network; GDELT, no key)
 python -m src.ingest.gdelt --start 2023-10-01 --end 2024-06-01
 
@@ -92,6 +96,7 @@ src/ingest/acled.py                pull both-sides events from ACLED
 src/ingest/gdelt.py                per-outlet coverage volume + tone
 src/ingest/headlines.py            harvest per-outlet headlines (GDELT artlist)
 src/baseline/rocket_baseline.py    derive rocket→Israel events + outcomes
+src/baseline/weekly_rate.py        weekly projectiles-toward-Israel series (2001–2024)
 src/analysis/coverage_volume.py    articles per event / per fatality by side
 src/analysis/framing.py            agent attribution & passive-voice metrics
 src/analysis/selection.py          which events get zero coverage, by side
