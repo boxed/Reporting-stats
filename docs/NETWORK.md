@@ -18,7 +18,14 @@ api.gdeltproject.org
 api.acleddata.com
 *.acleddata.com
 data.humdata.org
+www.tzevaadom.co.il
 ```
+
+`www.tzevaadom.co.il` serves the Red Alert (Tzeva Adom) siren archive used by
+`src/ingest/redalert.py` — the most granular free record of incoming fire.
+Note: `raw.githubusercontent.com` *is* reachable even under Trusted, so any
+GitHub-hosted mirror of the alert archive can be fetched without an allowlist
+change.
 
 Or choose **Full** for an ad-hoc research run. The change applies to **new**
 sessions. Docs: https://code.claude.com/docs/en/claude-code-on-the-web#network-access

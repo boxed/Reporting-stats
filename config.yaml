@@ -27,6 +27,21 @@ outlets:
     - { name: "Times of Israel",gdelt_domains: ["timesofisrael.com"] }
     - { name: "Haaretz",        gdelt_domains: ["haaretz.com"] }
 
+# Red Alert (Tzeva Adom / Pikud HaOref) siren archive — the most granular free
+# signal of incoming fire. See src/ingest/redalert.py. Host blocked under
+# "Trusted"; run locally or allowlist tzevaadom.co.il (docs/NETWORK.md).
+redalert:
+  source_url: "https://www.tzevaadom.co.il/static/historical/all.json"
+  # Field names inside each alert record — verify against the sample the
+  # ingester prints on first run and adjust if the schema has drifted.
+  date_field: "date"          # epoch seconds/ms or ISO string
+  category_field: "category"  # threat category (code or label)
+  area_field: "area"          # affected locality
+  # Keep only these categories. Digit values match the category CODE exactly;
+  # text values match as a case-insensitive substring. Empty list = keep all.
+  # Category 1 is rocket/missile fire; label variants included for robustness.
+  rocket_categories: ["1", "rocket", "missile", "טיל", "רקטות"]
+
 # Coverage-matching: how long after an event do we count articles as "covering" it.
 coverage:
   window_days: 3

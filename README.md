@@ -77,6 +77,10 @@ python -m src.baseline.weekly_rate
 # 2c. Print the year-by-year compiled counts (2001–2024), no network needed.
 python -m src.baseline.annual_counts
 
+# 2d. Pull the Red Alert (Tzeva Adom) siren archive -> weekly incoming-fire
+#     counts. Granular, timestamped, no key. Needs network (or run locally).
+python -m src.ingest.redalert
+
 # 3. Pull per-outlet coverage volume (needs network; GDELT, no key)
 python -m src.ingest.gdelt --start 2023-10-01 --end 2024-06-01
 
@@ -98,6 +102,7 @@ data/seed/annual_rocket_counts_seed.csv  year-by-year counts 2001–2024 (compil
 data/seed/SOURCES.md               provenance for every episode-seed figure
 data/seed/SOURCES_annual.md        provenance + caveats for the annual counts
 src/ingest/acled.py                pull both-sides events from ACLED
+src/ingest/redalert.py             Red Alert (Tzeva Adom) sirens -> weekly incoming-fire counts
 src/ingest/gdelt.py                per-outlet coverage volume + tone
 src/ingest/headlines.py            harvest per-outlet headlines (GDELT artlist)
 src/baseline/rocket_baseline.py    derive rocket→Israel events + outcomes
