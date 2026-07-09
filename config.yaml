@@ -31,16 +31,22 @@ outlets:
 # signal of incoming fire. See src/ingest/redalert.py. Host blocked under
 # "Trusted"; run locally or allowlist tzevaadom.co.il (docs/NETWORK.md).
 redalert:
-  source_url: "https://www.tzevaadom.co.il/static/historical/all.json"
-  # Field names inside each alert record — verify against the sample the
-  # ingester prints on first run and adjust if the schema has drifted.
-  date_field: "date"          # epoch seconds/ms or ISO string
-  category_field: "category"  # threat category (code or label)
-  area_field: "area"          # affected locality
-  # Keep only these categories. Digit values match the category CODE exactly;
-  # text values match as a case-insensitive substring. Empty list = keep all.
-  # Category 1 is rocket/missile fire; label variants included for robustness.
-  rocket_categories: ["1", "rocket", "missile", "טיל", "רקטות"]
+  # DEFAULT: dleshem/israel-alerts-data CSV mirror of the Home Front Command
+  # history (2014-07 → present). raw.githubusercontent.com is reachable even
+  # under Trusted, so this needs NO allowlist change.
+  source_url: "https://raw.githubusercontent.com/dleshem/israel-alerts-data/main/israel-alerts.csv"
+  source_format: "csv"        # "csv" (GitHub mirror) or "json" (tzevaadom)
+  date_field: "alertDate"     # ISO string (csv) or epoch s/ms (json → set "date")
+  category_field: "category"  # threat category code
+  area_field: "data"          # affected localities
+  # Category CODES to keep (exact match for digits). 1 = rocket/missile fire;
+  # 2 = hostile aircraft/UAV; 13/14 = all-clear/early-warning; 15 = drill.
+  # Empty list = keep all threat types.
+  rocket_categories: ["1"]
+  # Original source, if you prefer it (needs allowlist/local run):
+  #   source_url: "https://www.tzevaadom.co.il/static/historical/all.json"
+  #   source_format: "json"
+  #   date_field: "date"
 
 # Coverage-matching: how long after an event do we count articles as "covering" it.
 coverage:
